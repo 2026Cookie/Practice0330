@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<properties>
+    <query key="select employee list">
+        SELECT
+        E.EMP_ID,
+        E.EMP_NAME,
+        E.EMAIL,
+        E.PHONE,
+        D.DEPT_TITLE AS DEPT_NAME,
+        J.JOB_NAME,
+        E.SALARY,
+        E.ENT_YN
+        FROM EMPLOYEE E
+        LEFT JOIN DEPARTMENT D ON E.DEPT_CODE = D.DEPT_ID
+        LEFT JOIN JOB J ON E.JOB_CODE = J.JOB_CODE
+        ORDER BY E.EMP_ID ASC
+    </query>
+</properties>
