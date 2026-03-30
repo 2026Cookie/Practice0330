@@ -40,4 +40,30 @@ public class EmployeeDAO {
         return list;
     }
 
+    public EmployeeDTO getEmployeeById(Connection con, String empId) throws SQLException {
+        String query = QueryUtil.getQuery("select employee by id");
+
+        try (PreparedStatement pstmt = con.prepareStatement(query)) {
+            pstmt.setString(1, empId);
+
+            try (ResultSet rset = pstmt.executeQuery()) {
+                if (rset.next()) {
+                    EmployeeDTO emp = new EmployeeDTO();
+
+                    emp.setEmpId(rset.getString("EMP_ID"));
+                    emp.setEmpName(rset.getString("EMP_NAME"));
+                    emp.setEmail(rset.getString("EMAIL"));
+                    emp.setPhone(rset.getString("PHONE"));
+                    emp.setDeptName(rset.getString("DEPT_NAME"));
+                    emp.setJobName(rset.getString("JOB_NAME"));
+                    emp.setSalary(rset.getInt("SALARY"));
+                    emp.setEntYn(rset.getString("ENT_YN"));
+
+                    return emp;
+                }
+            }
+        }
+        return null;
+    }
+
 }

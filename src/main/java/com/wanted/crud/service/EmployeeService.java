@@ -30,4 +30,20 @@ public class EmployeeService {
 
         return empList;
     }
+    public EmployeeDTO getEmployeeById(String empId) {
+        Connection con = getConnection();
+        EmployeeDTO emp = null;
+
+        try {
+            emp = employeeDAO.getEmployeeById(con, empId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            close(con);
+        }
+
+        return emp;
+    }
+
 }
+
