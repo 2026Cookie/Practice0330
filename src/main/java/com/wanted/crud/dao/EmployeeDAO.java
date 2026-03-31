@@ -40,4 +40,19 @@ public class EmployeeDAO {
         return list;
     }
 
+    // 삭제
+    public int deleteEmployee(Connection con, String empId) throws SQLException {
+        int result = 0;
+        // xml에서 삭제 쿼리 가져오기
+        String query = QueryUtil.getQuery("delete employee");
+
+
+        try (PreparedStatement pstmt = con.prepareStatement(query)) {
+            pstmt.setString(1, empId);
+            result = pstmt.executeUpdate();
+        }
+
+        return result;
+    }
+
 }

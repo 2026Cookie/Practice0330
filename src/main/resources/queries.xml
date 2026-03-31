@@ -15,4 +15,13 @@
         LEFT JOIN JOB J ON E.JOB_CODE = J.JOB_CODE
         ORDER BY E.EMP_ID ASC
     </query>
+
+    //
+
+
+    <query key="delete employee">
+        DELETE FROM EMPLOYEE WHERE EMP_ID = ?
+    </query>
+
+    //
 </properties>
