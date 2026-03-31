@@ -1,6 +1,7 @@
 package com.wanted.crud.dao;
 
 import com.wanted.crud.dto.EmployeeDTO;
+import com.wanted.crud.global.JDBCTemplate;
 import com.wanted.crud.utils.QueryUtil;
 
 import java.sql.Connection;
@@ -9,6 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.wanted.crud.global.JDBCTemplate.close;
 
 public class EmployeeDAO {
 
@@ -55,4 +58,126 @@ public class EmployeeDAO {
         return result;
     }
 
+    // 회원 정보 수정
+    // 1. 단건 조회 (기존 메서드를 이것으로 교체하세요)
+    public EmployeeDTO selectOneByEmpId(Connection conn, String empId) {
+        EmployeeDTO emp = null;
+        PreparedStatement pstmt = null;
+        ResultSet rset = null;
+        // QueryUtil 사용
+        String sql = QueryUtil.getQuery("selectOneEmployee");
+
+        try {
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, empId);
+            rset = pstmt.executeQuery();
+
+            if (rset.next()) {
+                emp = new EmployeeDTO();
+                emp.setEmpId(rset.getString("EMP_ID"));
+                emp.setEmpName(rset.getString("EMP_NAME"));
+                emp.setEmail(rset.getString("EMAIL"));
+                emp.setPhone(rset.getString("PHONE"));
+                emp.setDeptCode(rset.getString("DEPT_CODE"));
+                emp.setJobCode(rset.getString("JOB_CODE"));
+                emp.setSalary(rset.getInt("SALARY"));
+                emp.setHireDate(rset.getDate("HIRE_DATE"));
+                emp.setEntYn(rset.getString("ENT_YN"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(rset);
+            close(pstmt);
+        }
+        return emp;
+    }
+
+    // 2. 사원 정보 수정 (기존 메서드를 이것으로 교체하세요)
+    public int updateEmployee(Connection conn, EmployeeDTO emp) {
+        int result = 0;
+        PreparedStatement pstmt = null;
+        // QueryUtil 사용
+        String sql = QueryUtil.getQuery("updateEmployee");
+
+        try {
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, emp.getEmail());
+            pstmt.setString(2, emp.getPhone());
+            pstmt.setString(3, emp.getDeptCode());
+            pstmt.setString(4, emp.getJobCode());
+            pstmt.setInt(5, emp.getSalary());
+            pstmt.setDate(6, emp.getHireDate());
+            pstmt.setString(7, emp.getEntYn());
+            pstmt.setString(8, emp.getEmpId());
+
+            result = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(pstmt);
+
+        }
+        return result;
+
+    }
+
+    public int insertEmployee(Connection con, EmployeeDTO emp){
+        int result = 0;
+        PreparedStatement pstmt = null;
+
+        String query = "INSERT INTO EMPLOYEE (EMP_ID, EMP_NAME, EMAIL, PHONE, DEPT_CODE, DEPT_NAME, JOB_CODE, JOB_NAME, SALARY, HIRE_DATE, ENT_YN) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try{
+            pstmt = con.prepareStatement(query);
+
+            pstmt.setString(1, emp.getEmpId());
+            pstmt.setString(2, emp.getEmpName());
+            pstmt.setString(3, emp.getEmail());
+            pstmt.setString(4, emp.getPhone());
+            pstmt.setString(5, emp.getDeptCode());
+            pstmt.setString(6, emp.getDeptName());
+            pstmt.setString(7, emp.getJobCode());
+            pstmt.setString(8, emp.getJobName());
+            pstmt.setInt(9, emp.getSalary());        // 숫자는 setInt
+            pstmt.setDate(10, emp.getHireDate());    // 날짜는 setDate
+            pstmt.setString(11, emp.getEntYn());
+
+            result = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            close(pstmt);
+        }
+        return result;
+    }
+
+    public EmployeeDTO getEmployeeById(Connection con, String empId) throws SQLException {
+        String query = QueryUtil.getQuery("select employee by id");
+
+        try (PreparedStatement pstmt = con.prepareStatement(query)) {
+            pstmt.setString(1, empId);
+
+            try (ResultSet rset = pstmt.executeQuery()) {
+                if (rset.next()) {
+                    EmployeeDTO emp = new EmployeeDTO();
+
+                    emp.setEmpId(rset.getString("EMP_ID"));
+                    emp.setEmpName(rset.getString("EMP_NAME"));
+                    emp.setEmail(rset.getString("EMAIL"));
+                    emp.setPhone(rset.getString("PHONE"));
+                    emp.setDeptName(rset.getString("DEPT_NAME"));
+                    emp.setJobName(rset.getString("JOB_NAME"));
+                    emp.setSalary(rset.getInt("SALARY"));
+                    emp.setEntYn(rset.getString("ENT_YN"));
+
+                    return emp;
+                }
+            }
+        }
+        return null;
+    }
 }
+
+

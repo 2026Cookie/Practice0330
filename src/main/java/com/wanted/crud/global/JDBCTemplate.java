@@ -70,4 +70,25 @@ public class JDBCTemplate {
             throw new RuntimeException(e);
         }
     }
+    // 추가 1. 커밋 (성공 시 DB 반영)
+    public static void commit(Connection con) {
+        try {
+            if (con != null && !con.isClosed()) {
+                con.commit();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // 추가 2. 롤백 (실패 시 작업 취소)
+    public static void rollback(Connection con) {
+        try {
+            if (con != null && !con.isClosed()) {
+                con.rollback();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
