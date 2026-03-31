@@ -22,7 +22,7 @@ public class EmployeeRegisterServlet extends HttpServlet {
 
         rd.forward(req, resp); //이동할 곳
     }
-
+//추가
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // 1. 한글 깨짐 방지 (필수)
