@@ -17,6 +17,14 @@
         ORDER BY E.EMP_ID ASC
     </query>
 
+    //
+
+
+    <query key="delete employee">
+        DELETE FROM EMPLOYEE WHERE EMP_ID = ?
+    </query>
+
+    //
     // 회원 정보 수정 쿼리문
     <query key="selectOneEmployee">
         SELECT * FROM EMPLOYEE WHERE EMP_ID = ?

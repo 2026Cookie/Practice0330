@@ -57,6 +57,21 @@ public class EmployeeService {
         return empList;
     }
 
+    // 삭제
+    public int deleteEmployee(String empId) {
+        Connection con = getConnection();
+        int result = 0;
+
+        try {
+
+            result = employeeDAO.deleteEmployee(con, empId);
+
+            // 트랜잭션 처리
+            if (result > 0) {
+                con.commit();
+            } else {
+                con.rollback();
+            }
     // 회원 정보 수정
     // 1. 단건 조회 (수정 폼 데이터 채우기용)
     public EmployeeDTO selectOneByEmpId(String empId) {
@@ -110,6 +125,9 @@ public class EmployeeService {
             close(con);
         }
 
+        return result;
+    }
+}
         return emp;
     }
 }
