@@ -225,6 +225,18 @@
         function needPostMessage(featureName) {
             alert(featureName + " 기능은 화면에서 직접 GET으로 이동하는 기능이 아니라, form을 이용한 POST 요청 처리 중심으로 실습합니다.");
         }
+        // function movePage(url, needLogin) { ... }
+        // function needPostMessage(featureName) { ... }
+
+        // 여기에 추가!
+        function goDetail() {
+            const empId = document.getElementById('empIdInput').value.trim();
+            if (!empId) {
+                alert("사원번호를 입력해주세요.");
+                return;
+            }
+            location.href = '<%= contextPath %>/employees/detail?empId=' + empId;
+        }
     </script>
 </head>
 <body>
@@ -327,7 +339,7 @@
                 <p><strong>추가 요구사항:</strong> 각 행에서 상세 조회, 수정, 삭제 기능으로 이동할 수 있어야 한다.</p>
             </div>
 
-            <div class="card" onclick="movePage('<%= contextPath %>/employees/detail?empId=200', true)">
+            <div class="card static-card">
                 <h3>사원 상세 조회</h3>
                 <p><strong>URL:</strong> GET /employees/detail?empId={empId}</p>
                 <p><strong>목적:</strong> 특정 사원 1명의 상세 정보를 조회한다.</p>
@@ -335,6 +347,14 @@
                 <p><strong>출력 항목:</strong> 사번, 이름, 이메일, 전화번호, 부서코드, 부서명, 직급코드, 직급명, 급여, 입사일, 퇴직여부</p>
                 <p><strong>처리 방식:</strong> empId를 파라미터로 받아 1건 조회 후 JSP로 forward 한다.</p>
                 <p><strong>예외 처리:</strong> 존재하지 않는 empId가 들어오면 에러 페이지로 이동한다.</p>
+
+                <% if (isLogin) { %>
+                <div class="btn-group" style="margin-top: 14px;">
+                    <input type="text" id="empIdInput" placeholder="사원번호 입력"
+                           style="padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; width: 160px;">
+                    <button class="btn" onclick="goDetail()">상세 조회</button>
+                </div>
+                <% } %>
             </div>
 
             <div class="card" onclick="movePage('<%= contextPath %>/employees/new', true)">
