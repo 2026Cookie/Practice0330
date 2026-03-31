@@ -13,7 +13,7 @@ import static com.wanted.crud.global.JDBCTemplate.getConnection;
 
 public class EmployeeService {
 
-    private EmployeeDAO employeeDAO = new EmployeeDAO();
+    private final EmployeeDAO employeeDAO = new EmployeeDAO();
 
     public List<EmployeeDTO> getEmployeeList() {
         // 1. Connection 생성
@@ -73,7 +73,7 @@ public class EmployeeService {
         }
         return result;
     }
-}
+
     public EmployeeDTO getEmployeeById(String empId) {
         Connection con = getConnection();
         EmployeeDTO emp = null;
@@ -88,6 +88,7 @@ public class EmployeeService {
 
         return emp;
     }
-
 }
+
+
 

@@ -101,6 +101,9 @@ public class EmployeeDAO {
             JDBCTemplate.close(pstmt);
         }
         return result;
+
+    }
+
     public EmployeeDTO getEmployeeById(Connection con, String empId) throws SQLException {
         String query = QueryUtil.getQuery("select employee by id");
 
@@ -126,5 +129,4 @@ public class EmployeeDAO {
         }
         return null;
     }
-
 }
