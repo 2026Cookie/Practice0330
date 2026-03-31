@@ -5,10 +5,10 @@ import com.wanted.crud.dto.EmployeeDTO;
 import com.wanted.crud.global.JDBCTemplate;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
-import static com.wanted.crud.global.JDBCTemplate.close;
-import static com.wanted.crud.global.JDBCTemplate.getConnection;
+import static com.wanted.crud.global.JDBCTemplate.*;
 
 
 public class EmployeeService {
@@ -38,6 +38,7 @@ public class EmployeeService {
         }
         return result;
     }
+
     public List<EmployeeDTO> getEmployeeList() {
         // 1. Connection 생성
         Connection con = getConnection();
