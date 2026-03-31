@@ -63,15 +63,20 @@ public class EmployeeService {
         int result = 0;
 
         try {
-
+            con.setAutoCommit(false);
             result = employeeDAO.deleteEmployee(con, empId);
-
             // 트랜잭션 처리
             if (result > 0) {
                 con.commit();
             } else {
                 con.rollback();
             }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return result;
+    }
+
     // 회원 정보 수정
     // 1. 단건 조회 (수정 폼 데이터 채우기용)
     public EmployeeDTO selectOneByEmpId(String empId) {
@@ -124,10 +129,6 @@ public class EmployeeService {
         } finally {
             close(con);
         }
-
-        return result;
-    }
-}
         return emp;
     }
 }
