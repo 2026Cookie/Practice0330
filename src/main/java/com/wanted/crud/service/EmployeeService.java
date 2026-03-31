@@ -15,6 +15,29 @@ public class EmployeeService {
 
     private final EmployeeDAO employeeDAO = new EmployeeDAO();
 
+    public int EmployeeRegister(EmployeeDTO newEmployee) {
+
+        Connection con = getConnection();
+        int result = 0;
+
+        try{
+            con.setAutoCommit(false);
+
+            result = employeeDAO.insertEmployee(con,newEmployee);
+
+            if(result > 0){
+                commit(con);
+            } else {
+                rollback(con);
+            }
+
+        } catch (SQLException e) {
+            rollback(con);
+        } finally {
+            close(con);
+        }
+        return result;
+    }
     public List<EmployeeDTO> getEmployeeList() {
         // 1. Connection 생성
         Connection con = getConnection();
